@@ -1,0 +1,34 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: rsvp-stream-publisher
+  labels:
+    app: rsvp-stream-publisher
+    tier: data-pipeline
+    env: dev
+  namespace: data-pipeline-dev
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: rsvp-stream-publisher
+        tier: data-pipeline
+        env: dev
+    spec:
+      volumes:
+      - name: google-cloud-key
+        secret:
+          secretName: gcp-key
+      containers:
+      - name: rsvp-stream-publisher
+        image: imrenagi/rsvp-stream-publisher:1.0.0
+        volumeMounts:
+        - name: google-cloud-key
+          mountPath: /var/secrets/google
+        env:
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /var/secrets/google/key.json
+        envFrom:
+        - configMapRef:
+            name: rsvp-stream-publisher-config

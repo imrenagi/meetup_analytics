@@ -1,0 +1,6 @@
+FROM java:8-jre
+MAINTAINER Imre Nagi <imre.nagi2812@gmail.com>
+
+ADD ./target/event-delivery-1.0.0-jar-with-dependencies.jar /app/
+
+CMD ["java", "-Xmx200m", "-cp", "/app/event-delivery-1.0.0-jar-with-dependencies.jar", "com.imrenagi.publisher.MeetupOpenEventsPublisher"]

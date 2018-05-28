@@ -1,0 +1,56 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: meetup-api
+  labels:
+    app: meetup-api
+    tier: backend
+    env: dev
+  namespace: data-pipeline-dev
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: meetup-api
+        tier: backend
+        env: dev
+    spec:
+      volumes:
+      - name: google-cloud-key
+        secret:
+          secretName: gcp-key
+      containers:
+      - name: meetup-api
+        image: imrenagi/meetup-api:1.0.0
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: google-cloud-key
+          mountPath: /var/secrets/google
+        env:
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /var/secrets/google/key.json
+        envFrom:
+        - configMapRef:
+            name: meetup-api-config
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: meetup-api
+  labels:
+    app: meetup-api
+    tier: backend
+    env: dev
+  namespace: data-pipeline-dev
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: meetup-api
+    tier: backend
+    env: dev

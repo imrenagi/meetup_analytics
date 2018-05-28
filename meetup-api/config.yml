@@ -1,0 +1,11 @@
+logging:
+  level: INFO
+  loggers:
+    com.imrenagi: DEBUG
+
+template: Hello, %s!
+defaultName: ${DW_DEFAULT_NAME:-Stranger}
+
+bigTableProjectId: ${GCP_PROJECT_ID} #add bigtable project id
+bigTableInstanceId: ${BIGTABLE_INSTANCE_ID} #add bigtable instance id
+rsvpCountTable: ${BIGTABLE_RSVP_TABLE_NAME} #add table name

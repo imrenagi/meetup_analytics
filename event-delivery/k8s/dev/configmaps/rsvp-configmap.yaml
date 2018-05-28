@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rsvp-stream-publisher-config
+  namespace: data-pipeline-dev
+data:
+  GCP_PROJECT_ID: #change this with the project id
+  GCP_RSVP_TOPIC_NAME: meetup.rsvp
